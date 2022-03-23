@@ -5,7 +5,7 @@ A simple 7-segment display utilizing a shift register and Arduino.
 
 Version 1 Board:
  - Proof of concept.
- Outcome:
+ ####Outcome:
  - Janky and barely/partially works.
  - Poor connections and use of space.
 
