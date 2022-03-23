@@ -1,0 +1,68 @@
+#include "SevSegShift.h"
+//#include "movingAvg.h"
+#include "MovingAverageFloat.h" 
+// ^-- Don't actually need to use moving Avg: Here is a video showing how it works: https://www.youtube.com/watch?v=wpGWE3MzSD4
+
+#define SHIFT_PIN_DS   8 /* Data input PIN */
+#define SHIFT_PIN_STCP 7 /* Shift Register Storage PIN */
+#define SHIFT_PIN_SHCP 6 /* Shift Register Shift PIN */
+
+
+//Instantiate a seven segment controller object (with Shift Register functionality)
+SevSegShift sevsegshift(
+                  SHIFT_PIN_DS, 
+                  SHIFT_PIN_SHCP, 
+                  SHIFT_PIN_STCP, 
+                  1, /* number of shift registers there is only 1 Shiftregister 
+                        used for all Segments (digits are on Controller)
+                        default value = 2 (see SevSegShift example)
+                        */
+                  true /* Digits are connected to Arduino directly 
+                          default value = false (see SevSegShift example)
+                        */
+                );
+
+MovingAverageFloat <2> voltAvg;
+
+int sensorValue = 0;
+
+void setup() {
+  Serial.begin(9600); // // Serial Communication is starting with 9600 of baudrate speed
+  
+  byte numDigits = 4;
+
+  // the digits (D1, D2, D3, D4) are connected to. Order them from left to right.
+  byte digitPins[] = {5, 4, 3, 2}; // These are the PINS of the ** Arduino **
+  
+  // is an array that stores the Shift Register pin numbers that the segments (A, B, C, D, E, F, G, DP) are connected to. 
+  // Order them from segment a to g, then the decimal place (if it's connected).
+                     // A   B  C  D  E  F  G  DP
+  byte segmentPins[] = {0, 2, 4, 6, 7, 1, 3, 5}; // these are the PINs of the ** Shift register **
+  
+  bool resistorsOnSegments = false; // 'false' means resistors are on digit pins
+  byte hardwareConfig = COMMON_CATHODE; // See README.md for options
+  bool updateWithDelays = true; // Default 'false' is Recommended
+  bool leadingZeros = false; // Use 'true' if you'd like to keep the leading zeros
+  bool disableDecPoint = false; // Use 'true' if your decimal point doesn't exist or isn't connected. Then, you only need to specify 7 segmentPins[]
+
+  sevsegshift.begin(hardwareConfig, numDigits, digitPins, segmentPins, resistorsOnSegments,
+  updateWithDelays, leadingZeros, disableDecPoint);
+}
+
+void loop(){
+    sensorValue = analogRead(A0);
+    float voltage = sensorValue * (9.0 / 1024.0);
+
+//    Serial.print("Instant Voltage: ");
+//    Serial.println(voltage);
+    
+    // Reading and updating movingAvg with values
+    float voltageMovingAvg = voltAvg.add(voltage);
+
+//    Serial.print("~ Voltage: ");
+//    Serial.println(voltageMovingAvg);
+
+    sevsegshift.setNumber(voltage * 100,2);
+//    sevsegshift.setNumber(voltageMovingAvg * 100,2);
+//      sevsegshift.setNumber(1234);
+    se
