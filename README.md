@@ -3,9 +3,15 @@ A simple 7-segment display utilizing a shift register and Arduino.
 
 # Goals
 
+Version 1 Board:
+ - Proof of concept.
+ Outcome:
+ - Janky and barely/partially works.
+ - Poor connections and use of space.
+
 Version 2 Board:
- - Adding current limiting resistors on all segments as opposed to cathodes of digits.
- - Adding DIP socket for the SN74HC595N shift register for reuse and replacement.
+ - Added current limiting resistors on all segments as opposed to cathodes of digits.
+ - Added DIP socket for the SN74HC595N shift register for reuse and replacement.
   
 Version 3 Board:
  - Add LEDS to each output and signal input of the shift register. This will allow for a visual queue as to what the register is doing.
