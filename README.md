@@ -16,6 +16,7 @@ Version 2 Board:
 Version 3 Board:
  - Add LEDS to each output and signal input of the shift register. This will allow for a visual queue as to what the register is doing.
  - Add circuit for measuring voltage (0-5v)
+ - Add circuit for measuring amperage
  - Possibly change to Transistors to sink current instead of current limiting resistors
  - Possibly add 9v battery power solution. Will probably need to step down to IC voltage range.
   
